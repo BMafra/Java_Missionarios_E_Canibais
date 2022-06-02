@@ -75,6 +75,7 @@ public class Main {
                 }
             }
         }
+        System.out.print("\nAtravessou o rio");
     }
 
     private static void verificacaoLadoDireito() {
@@ -128,30 +129,40 @@ public class Main {
 
         switch (continuacao) {
             case 1:
-                colocarNoBarcoLadoDireito();
+                //Barco atravessou o rio
+                if(Pessoa.barco.size() != 0) {
+                    colocarNoBarcoLadoDireito();
+                }
                 break;
 
             case 2:
                 tirarDoBarcoQuemVeioDoLadoDireito();
                 break;
 
-
+            case 3:
+                if(Pessoa.barco.size() == 0 || Pessoa.barco.size() == 1) {
+                    colocarNoBarcoLadoEsquerdo();
+                }
+                break;
         }
     }
 
     private static void colocarNoBarcoLadoEsquerdo() {
-        for (int i = 0; i < 2; i++) {
-            System.out.print("\nQuem você quer colocar no barco?");
-            for (int j = 0; j < Pessoa.ladoEsquerdo.size(); j++) {
-                System.out.print("\n" + (j + 1) + " - " + Pessoa.ladoEsquerdo.get(j).toString());
-            }
-            System.out.print("\nR: ");
-            int colocarNoBarco = sc.nextInt();
+            for (int i = 0; i < 2; i++) {
+                if(Pessoa.ladoEsquerdo.size() != 0 && Pessoa.barco.size() < 2) {
+                System.out.print("\nQuem você quer colocar no barco?");
+                for (int j = 0; j < Pessoa.ladoEsquerdo.size(); j++) {
+                    System.out.print("\n" + (j + 1) + " - " + Pessoa.ladoEsquerdo.get(j).toString());
+                }
+                System.out.print("\nR: ");
+                int colocarNoBarco = sc.nextInt();
 
-            for (int x = 0; x < Pessoa.ladoEsquerdo.size(); x++) {
-                if (colocarNoBarco - 1 == x) {
-                    Pessoa.barco.add((Pessoa.ladoEsquerdo.get(x)));
-                    Pessoa.ladoEsquerdo.remove(x);
+                for (int x = 0; x < Pessoa.ladoEsquerdo.size(); x++) {
+                    if (colocarNoBarco - 1 == x) {
+                        Pessoa.barco.add((Pessoa.ladoEsquerdo.get(x)));
+                        Pessoa.ladoEsquerdo.remove(x);
+                        System.out.print("\nAtravessou para o lado direito!");
+                    }
                 }
             }
         }
@@ -174,6 +185,24 @@ public class Main {
         }
     }
 
+    private static void tirarBarcoQuemVeioLadoEsquerdo(){
+        System.out.print("\nQuem você quer tirar do barco?");
+        for (int j = 0; j < Pessoa.barco.size(); j++) {
+            System.out.print("\n" + (j + 1) + " - " + Pessoa.barco.get(j).toString());
+        }
+        System.out.print("\nR: ");
+        int tirarDoBarco = sc.nextInt();
+
+        for (int x = 0; x < Pessoa.barco.size(); x++) {
+            if (tirarDoBarco - 1 == x) {
+                Pessoa.ladoDireito.add((Pessoa.barco.get(x)));
+                Pessoa.barco.remove(x);
+            }
+        }
+
+        colocarNoBarcoLadoDireito();
+    }
+
     private static void vitoria() {
         if (Pessoa.ladoDireito.size() == 0 && Pessoa.barco.size() == 0 && Pessoa.ladoEsquerdo.size() == 6) {
             System.out.print("\nVITÓRIA!\nVocê conseguiu atravessar todo mundo.");
@@ -182,13 +211,17 @@ public class Main {
     }
 
     public static void jogo() {
-        colocarNoBarcoLadoDireito();
+           colocarNoBarcoLadoDireito();
 
-        verificacaoLadoDireito();
+           verificacaoLadoDireito();
 
-        colocarNoBarcoLadoEsquerdo();
+           tirarDoBarcoQuemVeioDoLadoDireito();
 
-        verificacaoLadoEsquerdo();
+           colocarNoBarcoLadoEsquerdo();
+
+           verificacaoLadoEsquerdo();
+
+           tirarBarcoQuemVeioLadoEsquerdo();
 
         System.out.print("\nLado Direito");
         for (int j = 0; j < Pessoa.ladoDireito.size(); j++) {
