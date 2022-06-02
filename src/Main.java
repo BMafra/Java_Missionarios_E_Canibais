@@ -3,61 +3,73 @@ import java.util.Scanner;
 
 public class Main {
     static Scanner sc = new Scanner(System.in);
+
     public static void main(String[] args) {
-        Pessoa canibal1 = new Canibal();
-        Pessoa.ladoDireito.add(canibal1);
-
-        Pessoa canibal2 = new Canibal();
-        Pessoa.ladoDireito.add(canibal2);
-
-        Pessoa canibal3 = new Canibal();
-        Pessoa.ladoDireito.add(canibal3);
-
-        Pessoa missionario1 = new Missionario();
-        Pessoa.ladoDireito.add(missionario1);
-
-        Pessoa missionario2 = new Missionario();
-        Pessoa.ladoDireito.add(missionario2);
-
-        Pessoa missionario3 = new Missionario();
-        Pessoa.ladoDireito.add(missionario3);
-
-        menu();
+        inicio();
     }
 
-    private static void menu() {
-        System.out.println("\nMENU" +
-                "\n1 - Jogar" +
-                "\n2 - Encerrar");
-        int opcao = sc.nextInt();
+    private static void limparListas() {
+        Pessoa.ladoDireito.clear();
+        Pessoa.ladoEsquerdo.clear();
+        Pessoa.barco.clear();
+    }
 
-        switch (opcao) {
+    private static void criacaoPersonagens() {
+        Pessoa c1 = new Canibal("C1");
+        Pessoa.ladoDireito.add(c1);
+
+        Pessoa c2 = new Canibal("C2");
+        Pessoa.ladoDireito.add(c2);
+
+        Pessoa c3 = new Canibal("C3");
+        Pessoa.ladoDireito.add(c3);
+
+        Pessoa m1 = new Missionario("M1");
+        Pessoa.ladoDireito.add(m1);
+
+        Pessoa m2 = new Missionario("M2");
+        Pessoa.ladoDireito.add(m2);
+
+        Pessoa m3 = new Missionario("M3");
+        Pessoa.ladoDireito.add(m3);
+    }
+
+    private static void inicio() {
+        limparListas();
+        criacaoPersonagens();
+
+        System.out.print("---- INÍCIO ----" +
+                "\n1 - Jogar" +
+                "\n2 - Encerrar" +
+                "\nR: ");
+        int opcaoInicio = sc.nextInt();
+
+        switch (opcaoInicio) {
             case 1:
-                jogo ();
+                jogo();
                 break;
+
             case 2:
-                System.out.println("\nTchau!");
+                System.out.print("\nEncerrando...");
                 System.exit(0);
-                break;
+
             default:
-                System.out.print("\nNúmero inválido. Tente novamente!");
-                menu();
+                System.out.print("\nOpção inválida! Tente novamente:\n");
+                inicio();
         }
     }
 
     private static void colocarNoBarcoLadoDireito() {
-        for(int i = 0; i < 2; i++){
+        for (int i = 0; i < 2; i++) {
             System.out.print("\nQuem você quer colocar no barco?");
-
             for (int j = 0; j < Pessoa.ladoDireito.size(); j++) {
                 System.out.print("\n" + (j + 1) + " - " + Pessoa.ladoDireito.get(j).toString());
             }
-
             System.out.print("\nR: ");
             int colocarNoBarco = sc.nextInt();
 
-            for(int x = 0; x < Pessoa.ladoDireito.size(); x++){
-                if(colocarNoBarco - 1 == x){
+            for (int x = 0; x < Pessoa.ladoDireito.size(); x++) {
+                if (colocarNoBarco - 1 == x) {
                     Pessoa.barco.add((Pessoa.ladoDireito.get(x)));
                     Pessoa.ladoDireito.remove(x);
                 }
@@ -68,7 +80,7 @@ public class Main {
     private static void verificacaoLadoDireito() {
         int quantidadeCanibais = 0, quantidadeMissionarios = 0;
 
-        for(int i = 0; i < Pessoa.ladoDireito.size(); i++) {
+        for (int i = 0; i < Pessoa.ladoDireito.size(); i++) {
             if (Pessoa.ladoDireito.get(i) instanceof Canibal) {
                 quantidadeCanibais++;
             } else if (Pessoa.ladoDireito.get(i) instanceof Missionario) {
@@ -76,16 +88,96 @@ public class Main {
             }
         }
 
-        if(quantidadeCanibais > quantidadeMissionarios){
-            System.out.print("\nFim de jogo! Os missionários foram comidos!\n\n");
-            menu();
+        if (quantidadeCanibais > quantidadeMissionarios) {
+            System.out.print("\nDERROTA! Os missionários foram comidos.\n\n");
+            inicio();
+        }
+    }
+
+    private static void tirarDoBarcoQuemVeioDoLadoDireito() {
+        System.out.print("\nQuem você quer tirar do barco?");
+        for (int j = 0; j < Pessoa.barco.size(); j++) {
+            System.out.print("\n" + (j + 1) + " - " + Pessoa.barco.get(j).toString());
+        }
+        System.out.print("\nR: ");
+        int tirarDoBarco = sc.nextInt();
+
+        for (int x = 0; x < Pessoa.barco.size(); x++) {
+            if (tirarDoBarco - 1 == x) {
+                Pessoa.ladoEsquerdo.add((Pessoa.barco.get(x)));
+                Pessoa.barco.remove(x);
+            }
+        }
+
+        continuacaoTirarDoBarcoQuemVeioDoLadoDireito();
+    }
+
+    private static void continuacaoTirarDoBarcoQuemVeioDoLadoDireito() {
+        System.out.print("\nComo você quer prosseguir?");
+
+        if (Pessoa.barco.size() == 1) {
+            System.out.print("\n1 - Voltar com um personagem" +
+                    "\n2 - Tirar do barco o personagem" +
+                    "\n3 - Colocar outro personagem da margem esquerda" +
+                    "\nR: ");
+        } else if (Pessoa.barco.size() == 0) {
+            System.out.print("\n1 - Colocar um personagem da margem" +
+                    "\nR: ");
+        }
+        int continuacao = sc.nextInt();
+
+        switch (continuacao) {
+            case 1:
+                colocarNoBarcoLadoDireito();
+                break;
+
+            case 2:
+                tirarDoBarcoQuemVeioDoLadoDireito();
+                break;
+
+
+        }
+    }
+
+    private static void colocarNoBarcoLadoEsquerdo() {
+        for (int i = 0; i < 2; i++) {
+            System.out.print("\nQuem você quer colocar no barco?");
+            for (int j = 0; j < Pessoa.ladoEsquerdo.size(); j++) {
+                System.out.print("\n" + (j + 1) + " - " + Pessoa.ladoEsquerdo.get(j).toString());
+            }
+            System.out.print("\nR: ");
+            int colocarNoBarco = sc.nextInt();
+
+            for (int x = 0; x < Pessoa.ladoEsquerdo.size(); x++) {
+                if (colocarNoBarco - 1 == x) {
+                    Pessoa.barco.add((Pessoa.ladoEsquerdo.get(x)));
+                    Pessoa.ladoEsquerdo.remove(x);
+                }
+            }
+        }
+    }
+
+    private static void verificacaoLadoEsquerdo() {
+        int quantidadeCanibais = 0, quantidadeMissionarios = 0;
+
+        for (int i = 0; i < Pessoa.ladoEsquerdo.size(); i++) {
+            if (Pessoa.ladoEsquerdo.get(i) instanceof Canibal) {
+                quantidadeCanibais++;
+            } else if (Pessoa.ladoEsquerdo.get(i) instanceof Missionario) {
+                quantidadeMissionarios++;
+            }
+        }
+
+        if (quantidadeCanibais > quantidadeMissionarios) {
+            System.out.print("\nDERROTA! Os missionários foram comidos.\n\n");
+            inicio();
         }
     }
 
     private static void vitoria() {
-        if(Pessoa.ladoDireito.isEmpty() && Pessoa.barco.isEmpty() && Pessoa.ladoEsquerdo.size() == 6){
-            System.out.print("\nVITÓRIA\nVocê conseguiu atravessar todo mundo!");
-            menu();
+        if (Pessoa.ladoDireito.size() == 0 && Pessoa.barco.size() == 0 && Pessoa.ladoEsquerdo.size() == 6) {
+            System.out.print("\nVITÓRIA!\nVocê conseguiu atravessar todo mundo.");
+            inicio();
         }
     }
 
@@ -94,15 +186,24 @@ public class Main {
 
         verificacaoLadoDireito();
 
+        colocarNoBarcoLadoEsquerdo();
 
-        System.out.print("\nBarco");
-        for(int i = 0; i < Pessoa.barco.size(); i++){
-            System.out.print("\n" + (i + 1) + " - " + Pessoa.barco.get(i).toString());
-        }
+        verificacaoLadoEsquerdo();
 
         System.out.print("\nLado Direito");
         for (int j = 0; j < Pessoa.ladoDireito.size(); j++) {
             System.out.print("\n" + (j + 1) + " - " + Pessoa.ladoDireito.get(j).toString());
         }
+
+        System.out.print("\nLado Esquerdo");
+        for (int j = 0; j < Pessoa.ladoEsquerdo.size(); j++) {
+            System.out.print("\n" + (j + 1) + " - " + Pessoa.ladoEsquerdo.get(j).toString());
+        }
+
+        System.out.print("\nBarco");
+        for (int i = 0; i < Pessoa.barco.size(); i++) {
+            System.out.print("\n" + (i + 1) + " - " + Pessoa.barco.get(i).toString());
+        }
+
     }
 }
