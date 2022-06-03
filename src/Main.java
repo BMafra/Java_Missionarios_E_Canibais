@@ -130,7 +130,7 @@ public class Main {
         switch (continuacao) {
             case 1:
                 //Barco atravessou o rio
-                if(Pessoa.barco.size() != 0) {
+                if (Pessoa.barco.size() != 0) {
                     colocarNoBarcoLadoDireito();
                 }
                 break;
@@ -140,7 +140,7 @@ public class Main {
                 break;
 
             case 3:
-                if(Pessoa.barco.size() == 0 || Pessoa.barco.size() == 1) {
+                if (Pessoa.barco.size() == 0 || Pessoa.barco.size() == 1) {
                     colocarNoBarcoLadoEsquerdo();
                 }
                 break;
@@ -148,8 +148,8 @@ public class Main {
     }
 
     private static void colocarNoBarcoLadoEsquerdo() {
-            for (int i = 0; i < 2; i++) {
-                if(Pessoa.ladoEsquerdo.size() != 0 && Pessoa.barco.size() < 2) {
+        for (int i = 0; i < 2; i++) {
+            if (Pessoa.ladoEsquerdo.size() != 0 && Pessoa.barco.size() < 2) {
                 System.out.print("\nQuem você quer colocar no barco?");
                 for (int j = 0; j < Pessoa.ladoEsquerdo.size(); j++) {
                     System.out.print("\n" + (j + 1) + " - " + Pessoa.ladoEsquerdo.get(j).toString());
@@ -161,11 +161,12 @@ public class Main {
                     if (colocarNoBarco - 1 == x) {
                         Pessoa.barco.add((Pessoa.ladoEsquerdo.get(x)));
                         Pessoa.ladoEsquerdo.remove(x);
-                        System.out.print("\nAtravessou para o lado direito!");
+
                     }
                 }
             }
         }
+        System.out.print("\nAtravessou para o lado direito!");
     }
 
     private static void verificacaoLadoEsquerdo() {
@@ -185,7 +186,7 @@ public class Main {
         }
     }
 
-    private static void tirarBarcoQuemVeioLadoEsquerdo(){
+    private static void tirarBarcoQuemVeioLadoEsquerdo() {
         System.out.print("\nQuem você quer tirar do barco?");
         for (int j = 0; j < Pessoa.barco.size(); j++) {
             System.out.print("\n" + (j + 1) + " - " + Pessoa.barco.get(j).toString());
@@ -211,17 +212,17 @@ public class Main {
     }
 
     public static void jogo() {
-           colocarNoBarcoLadoDireito();
+        colocarNoBarcoLadoDireito();
 
-           verificacaoLadoDireito();
+        verificacaoLadoDireito();
 
-           tirarDoBarcoQuemVeioDoLadoDireito();
+        tirarDoBarcoQuemVeioDoLadoDireito();
 
-           colocarNoBarcoLadoEsquerdo();
+        colocarNoBarcoLadoEsquerdo();
 
-           verificacaoLadoEsquerdo();
+        verificacaoLadoEsquerdo();
 
-           tirarBarcoQuemVeioLadoEsquerdo();
+        tirarBarcoQuemVeioLadoEsquerdo();
 
         System.out.print("\nLado Direito");
         for (int j = 0; j < Pessoa.ladoDireito.size(); j++) {
