@@ -4,6 +4,8 @@ import java.util.Scanner;
 public class Main {
     static Scanner sc = new Scanner(System.in);
 
+    static Rio rio = new Rio(1);
+
     public static void main(String[] args) {
         inicio();
     }
@@ -86,12 +88,12 @@ public class Main {
             menuJogo();
         } else {
             System.out.println("Quem deseja colocar no barco?");
-            if (Rio.getLado == 1) {
+            if (rio.getLado() == 1) {
                 System.out.println("Lado direito\n");
                 for (int i = 0; i < Pessoa.ladoDireito.size(); i++) {
                     System.out.print("\n" + (i + 1) + " - " + Pessoa.ladoDireito.get(i).toString());
                 }
-            } else if (Rio.getLado == 2) {
+            } else if (rio.getLado() == 2) {
                 System.out.println("Lado Esquerdo\n");
                 for (int i = 0; i < Pessoa.ladoEsquerdo.size(); i++) {
                     System.out.print("\n" + (i + 1) + " - " + Pessoa.ladoEsquerdo.get(i).toString());
@@ -116,14 +118,14 @@ public class Main {
         }
         int opcao = sc.nextInt();
 
-        if (Rio.getLado == 1) {
+        if (rio.getLado() == 1) {
             for (int i = 0; i < Pessoa.barco.size(); i++) {
                 if (opcao - 1 == i) {
                     Pessoa.ladoDireito.add((Pessoa.barco.get(i)));
                     Pessoa.barco.remove(i);
                 }
             }
-        } else if (Rio.getLado == 2){
+        } else if (rio.getLado() == 2){
             for (int i = 0; i < Pessoa.barco.size(); i++) {
                 if (opcao - 1 == i) {
                     Pessoa.ladoEsquerdo.add((Pessoa.barco.get(i)));
