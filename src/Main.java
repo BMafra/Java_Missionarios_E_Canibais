@@ -81,24 +81,29 @@ public class Main {
     }
 
     private static void colocarNoBarco(){
-        System.out.println("Quem deseja colocar no barco?");
-        if (Rio.getLado == 1){
-            System.out.println("Lado direito\n");
-            for (int i = 0; i < Pessoa.ladoDireito.size(); i++) {
-                System.out.print("\n" + (i + 1) + " - " + Pessoa.ladoDireito.get(i).toString());
+        if (Pessoa.barco.size() >= 2){
+            System.out.println("Barco lotado!");
+            menuJogo();
+        } else {
+            System.out.println("Quem deseja colocar no barco?");
+            if (Rio.getLado == 1) {
+                System.out.println("Lado direito\n");
+                for (int i = 0; i < Pessoa.ladoDireito.size(); i++) {
+                    System.out.print("\n" + (i + 1) + " - " + Pessoa.ladoDireito.get(i).toString());
+                }
+            } else if (Rio.getLado == 2) {
+                System.out.println("Lado Esquerdo\n");
+                for (int i = 0; i < Pessoa.ladoEsquerdo.size(); i++) {
+                    System.out.print("\n" + (i + 1) + " - " + Pessoa.ladoEsquerdo.get(i).toString());
+                }
             }
-        } else if(Rio.getLado == 2){
-            System.out.println("Lado Esquerdo\n");
-            for (int i = 0; i < Pessoa.ladoEsquerdo.size(); i++) {
-                System.out.print("\n" + (i + 1) + " - " + Pessoa.ladoEsquerdo.get(i).toString());
-            }
-        }
-        int opcao = sc.nextInt();
+            int opcao = sc.nextInt();
 
-        for (int i = 0; i < Pessoa.ladoDireito.size(); i++) {
-            if (opcao - 1 == i) {
-                Pessoa.barco.add((Pessoa.ladoDireito.get(i)));
-                Pessoa.ladoDireito.remove(i);
+            for (int i = 0; i < Pessoa.ladoDireito.size(); i++) {
+                if (opcao - 1 == i) {
+                    Pessoa.barco.add((Pessoa.ladoDireito.get(i)));
+                    Pessoa.ladoDireito.remove(i);
+                }
             }
         }
         menuJogo();
